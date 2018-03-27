@@ -15,13 +15,13 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
     @IBOutlet weak var lastUpdated: UILabel!
     
     var productList = [Product]()
-
+    var selectedProduct = Product(name: "",category: "",itemsRemaining: -1,image_url: "",description: "")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         downloadProductsList {
             self.totalProducts.text = NSString(format:"Total items: %d", self.productList.count) as String
-            
             self.productListTable.reloadData()
         }
     }
@@ -32,7 +32,13 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:ProductCell = tableView.dequeueReusableCell(withIdentifier: "cell") as! ProductCell
-        cell.productName.text = self.productList[indexPath.row].name ?? ""
+        
+        let productName = self.productList[indexPath.row].name ?? ""
+        let imageUrlString =  self.productList[indexPath.row].image_url ?? ""
+        
+        cell.thumbnailImage.downloadImageFromUrlString(urlString: imageUrlString)
+        cell.productName.text = productName
+        
         return cell
     }
     
@@ -54,6 +60,21 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
         }.resume()
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let product = self.productList[indexPath.row]
+        
+        selectedProduct = product
+        
+        performSegue(withIdentifier:"showDetail", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetail" {
+            let destinationVC = segue.destination as! ProductDetailViewController
+            destinationVC.selectedProduct = selectedProduct
+        }
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
