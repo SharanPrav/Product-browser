@@ -11,8 +11,8 @@ import Foundation
 struct Product: Decodable {
     let name: String?
     let category: String?
-    let ItemsRemaining: Int?
-    let image: String?
+    let itemsRemaining: Int?
+    let image_url: String?
     let description: String?
 }
 

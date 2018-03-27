@@ -8,63 +8,60 @@
 
 import UIKit
 
-class ProductDetailViewController: UIViewController {
+class ProductDetailViewController: UIViewController, UIWebViewDelegate {
     
     var selectedProduct = Product(name: "",category: "",itemsRemaining: -1,image_url: "",description: "")
 
     @IBOutlet weak var productImageHeight: NSLayoutConstraint!
-    @IBOutlet weak var productImage: UIImageView!
-    @IBOutlet weak var productDescription: UITextView!
     @IBOutlet weak var productImageLeading: NSLayoutConstraint!
     @IBOutlet weak var productImageTrailing: NSLayoutConstraint!
-    @IBOutlet weak var ProductTitle: UILabel!
     @IBOutlet weak var productTitleTop: NSLayoutConstraint!
+    @IBOutlet weak var ProductDescriptionViewHeight: NSLayoutConstraint!
     
+    @IBOutlet weak var productImageView: UIImageView!
+    @IBOutlet weak var ProductDescriptionView: UIWebView!
+    @IBOutlet weak var ProductTitle: UILabel!
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = selectedProduct.name
-        let imageUrlString = selectedProduct.image_url ?? "http://www.newlaunches.com/wp-content/uploads/2013/04/pad-mini.jpg"
+        self.ProductDescriptionView.delegate = self
         self.ProductTitle.text = selectedProduct.name
+        self.navigationItem.title = selectedProduct.name
+
+        let imageUrlString = selectedProduct.image_url ?? ""
+        productImageView.sd_setImage(with: URL(string: imageUrlString), placeholderImage: UIImage.init(named: "placeholder.jpg"), completed: nil)
         
-        productDescription.text = selectedProduct.description ?? ""
-        productImage.downloadImageFromUrlString(urlString: imageUrlString)
-        animateDetails()
+        ProductDescriptionView.scrollView.bounces = false;
+        ProductDescriptionView.scrollView.isScrollEnabled = false
+        ProductDescriptionView.loadHTMLString(selectedProduct.description!, baseURL: nil)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        animateDetailView()
     }
 
-    func animateDetails() {
+    func animateDetailView() {
         UIView.animate(withDuration: 1.0) {
             self.productImageLeading.constant = 0
             self.productImageTrailing.constant = 0
-            if let image = self.productImage.image {
+            
+            if let image = self.productImageView.image {
                 let ratio = image.size.width / image.size.height
                 let newHeight = self.view.frame.width / ratio
                 self.productImageHeight.constant = newHeight
             }
-            self.productTitleTop.constant = self.productImageHeight.constant+20
             self.view.layoutIfNeeded()
         }
     }
     
-    
-    override func viewDidAppear(_ animated: Bool) {
-        
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        ProductDescriptionViewHeight.constant = webView.scrollView.contentSize.height
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
