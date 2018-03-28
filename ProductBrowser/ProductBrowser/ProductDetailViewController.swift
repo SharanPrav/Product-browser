@@ -10,7 +10,7 @@ import UIKit
 
 class ProductDetailViewController: UIViewController, UIWebViewDelegate {
     
-    var selectedProduct = Product(name: "",category: "",itemsRemaining: -1,image_url: "",description: "")
+    var selectedProduct:Product?
 
     @IBOutlet weak var productImageHeight: NSLayoutConstraint!
     @IBOutlet weak var productImageLeading: NSLayoutConstraint!
@@ -26,15 +26,15 @@ class ProductDetailViewController: UIViewController, UIWebViewDelegate {
         super.viewDidLoad()
         
         self.ProductDescriptionView.delegate = self
-        self.ProductTitle.text = selectedProduct.name
-        self.navigationItem.title = selectedProduct.name
+        self.ProductTitle.text = selectedProduct!.name
+        self.navigationItem.title = selectedProduct!.name
 
-        let imageUrlString = selectedProduct.image_url ?? ""
+        let imageUrlString = selectedProduct!.image_url ?? ""
         productImageView.sd_setImage(with: URL(string: imageUrlString), placeholderImage: UIImage.init(named: "placeholder.jpg"), completed: nil)
         
         ProductDescriptionView.scrollView.bounces = false;
         ProductDescriptionView.scrollView.isScrollEnabled = false
-        ProductDescriptionView.loadHTMLString(selectedProduct.description!, baseURL: nil)
+        ProductDescriptionView.loadHTMLString(selectedProduct!.description!, baseURL: nil)
     }
     
     override func viewDidLayoutSubviews() {

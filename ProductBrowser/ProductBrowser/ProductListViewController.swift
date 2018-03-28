@@ -16,12 +16,13 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
     
     var reachability: Reachability?
     var productList = [Product]()
+    var filteredProducts = [Product]()
+
     private let timer = DispatchSource.makeTimerSource()
-    var selectedProduct = Product(name: "",category: "",itemsRemaining: -1,image_url: "",description: "")
+    var selectedProduct: Product?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -37,6 +38,7 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
             DispatchQueue.main.sync {
                 if (self.reachability!.connection) != .none {
                     self.downloadProductsList {
+                        print(self.filteredProducts.count)
                         self.productListTable.reloadData()
                         self.updateHeader()
                     }
@@ -50,7 +52,11 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
     }
     
     func updateHeader() {
-        self.totalProducts.text = NSString(format:"Total items: %d", self.productList.count) as String
+        var totalItemsInStock = 0
+        for  product in self.productList {
+                totalItemsInStock = totalItemsInStock + product.items_remaining!
+        }
+        self.totalProducts.text = NSString(format:"%d items in stock", totalItemsInStock) as String
         self.lastUpdated.text = NSString(format:"Last updated: %@", self.currentTimeString()) as String
     }
     
@@ -69,7 +75,7 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
             do {
                 let productList = try
                     JSONDecoder().decode([Product].self, from: data)
-                    self.productList = productList
+                self.productList = productList.filter({$0.items_remaining! > 0 })
                 DispatchQueue.main.async {
                     completed()
                 }

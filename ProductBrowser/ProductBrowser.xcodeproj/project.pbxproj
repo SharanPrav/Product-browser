@@ -139,9 +139,9 @@
 		A1FCDC9220666ACC007BB911 /* ProductBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				A1FCDCC120667FD9007BB911 /* Model */,
 				A1FCDCDA206BB30B007BB911 /* Helpers */,
 				A1FCDCCB20684B0F007BB911 /* ProductCell.swift */,
-				A1FCDCC120667FD9007BB911 /* Model */,
 				A1FCDC9320666ACC007BB911 /* AppDelegate.swift */,
 				A1FCDC9520666ACC007BB911 /* ProductListViewController.swift */,
 				A1FCDC9720666ACC007BB911 /* Main.storyboard */,
