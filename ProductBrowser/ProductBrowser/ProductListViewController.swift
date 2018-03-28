@@ -16,30 +16,14 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
     
     var reachability: Reachability?
     var productList = [Product]()
+    private let timer = DispatchSource.makeTimerSource()
     var selectedProduct = Product(name: "",category: "",itemsRemaining: -1,image_url: "",description: "")
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.productList.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell:ProductCell = tableView.dequeueReusableCell(withIdentifier: "cell") as! ProductCell
-        
-        let productName = self.productList[indexPath.row].name ?? ""
-        let imageUrlString =  self.productList[indexPath.row].image_url ?? ""
-        
-        cell.thumbnailImage.sd_setImage(with: URL(string: imageUrlString), placeholderImage: UIImage.init(named: "placeholder.jpg"), completed: nil)
-        
-        cell.productName.text = productName
-        
-        return cell
-    }
-    
-    private let timer = DispatchSource.makeTimerSource()
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -60,7 +44,6 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
                     self.totalProducts.text = "You seem to be offline"
                     self.lastUpdated.text = "Please check internet connection and try again"
                 }
-               
             }
         }
         timer.activate()
@@ -94,6 +77,23 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
                 print("Error serializing from json:", jsonErr)
             }
         }.resume()
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.productList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell:ProductCell = tableView.dequeueReusableCell(withIdentifier: "cell") as! ProductCell
+        
+        let productName = self.productList[indexPath.row].name ?? ""
+        let imageUrlString =  self.productList[indexPath.row].image_url ?? ""
+        
+        cell.thumbnailImage.sd_setImage(with: URL(string: imageUrlString), placeholderImage: UIImage.init(named: "placeholder.jpg"), completed: nil)
+        
+        cell.productName.text = productName
+        
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
