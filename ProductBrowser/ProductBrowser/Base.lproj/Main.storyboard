@@ -19,35 +19,39 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MfO-yZ-WtU">
-                                <rect key="frame" x="0.0" y="64" width="375" height="80"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MfO-yZ-WtU">
+                                <rect key="frame" x="0.0" y="64" width="375" height="70"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Items" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7sC-mm-Ph1">
-                                        <rect key="frame" x="10" y="10" width="355" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="10" y="10" width="103" height="24"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last updated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V4R-V5-9gf">
-                                        <rect key="frame" x="10" y="51" width="355" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
+                                        <rect key="frame" x="10" y="44" width="355" height="16"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.7683708639960215" green="0.7683708639960215" blue="0.7683708639960215" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="V4R-V5-9gf" secondAttribute="bottom" constant="10" id="IuY-Iu-22J"/>
+                                    <constraint firstItem="V4R-V5-9gf" firstAttribute="top" secondItem="7sC-mm-Ph1" secondAttribute="bottom" constant="10" id="MKA-Xz-pen"/>
                                     <constraint firstAttribute="trailing" secondItem="V4R-V5-9gf" secondAttribute="trailing" constant="10" id="OAd-0j-mPB"/>
                                     <constraint firstItem="V4R-V5-9gf" firstAttribute="leading" secondItem="MfO-yZ-WtU" secondAttribute="leading" constant="10" id="Oxg-qy-7bi"/>
                                     <constraint firstItem="7sC-mm-Ph1" firstAttribute="leading" secondItem="MfO-yZ-WtU" secondAttribute="leading" constant="10" id="Wxg-Os-8g9"/>
-                                    <constraint firstAttribute="trailing" secondItem="7sC-mm-Ph1" secondAttribute="trailing" constant="10" id="XHg-Sp-aMq"/>
                                     <constraint firstItem="7sC-mm-Ph1" firstAttribute="top" secondItem="MfO-yZ-WtU" secondAttribute="top" constant="10" id="kR1-Ki-iHR"/>
-                                    <constraint firstAttribute="height" constant="80" id="tkH-hk-rp8"/>
-                                    <constraint firstItem="V4R-V5-9gf" firstAttribute="top" secondItem="7sC-mm-Ph1" secondAttribute="bottom" constant="20" id="u3g-Dt-C1g"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZeO-3U-3WV">
-                                <rect key="frame" x="0.0" y="144" width="375" height="523"/>
+                                <rect key="frame" x="0.0" y="134" width="375" height="533"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="80" id="PcB-ul-nvd" customClass="ProductCell" customModule="ProductBrowser" customModuleProvider="target">

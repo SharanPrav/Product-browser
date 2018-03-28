@@ -14,16 +14,12 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
     @IBOutlet weak var productListTable: UITableView!
     @IBOutlet weak var lastUpdated: UILabel!
     
+    var reachability: Reachability?
     var productList = [Product]()
     var selectedProduct = Product(name: "",category: "",itemsRemaining: -1,image_url: "",description: "")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        downloadProductsList {
-            self.totalProducts.text = NSString(format:"Total items: %d", self.productList.count) as String
-            self.productListTable.reloadData()
-        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -41,6 +37,45 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
         cell.productName.text = productName
         
         return cell
+    }
+    
+    private let timer = DispatchSource.makeTimerSource()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.reachability = Reachability.init()
+        triggerDataRefresh()
+    }
+    
+    func triggerDataRefresh() {
+        timer.schedule(deadline: .now(), repeating: 300.0)
+        timer.setEventHandler {
+            DispatchQueue.main.sync {
+                if (self.reachability!.connection) != .none {
+                    self.downloadProductsList {
+                        self.productListTable.reloadData()
+                        self.updateHeader()
+                    }
+                } else {
+                    self.totalProducts.text = "You seem to be offline"
+                    self.lastUpdated.text = "Please check internet connection and try again"
+                }
+               
+            }
+        }
+        timer.activate()
+    }
+    
+    func updateHeader() {
+        self.totalProducts.text = NSString(format:"Total items: %d", self.productList.count) as String
+        self.lastUpdated.text = NSString(format:"Last updated: %@", self.currentTimeString()) as String
+    }
+    
+    func currentTimeString() -> String {
+        let dateFormatter : DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        let dateString = dateFormatter.string(from: Date())
+        return dateString
     }
     
     func downloadProductsList(completed: @escaping() -> ()) {

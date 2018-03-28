@@ -22,6 +22,7 @@
 		A1FCDCCD20684B0F007BB911 /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FCDCCB20684B0F007BB911 /* ProductCell.swift */; };
 		A1FCDCCF2069493E007BB911 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FCDCCE2069493E007BB911 /* ProductDetailViewController.swift */; };
 		A1FCDCD02069493E007BB911 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FCDCCE2069493E007BB911 /* ProductDetailViewController.swift */; };
+		A1FCDCDC206BB31D007BB911 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FCDCDB206BB31D007BB911 /* Reachability.swift */; };
 		FC0AC4972E4EE8AAE85510DB /* Pods_ProductBrowserTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 142F41A3C832B817ECF1B4AA /* Pods_ProductBrowserTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +68,7 @@
 		A1FCDCCB20684B0F007BB911 /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		A1FCDCCE2069493E007BB911 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		A1FCDCD5206AA945007BB911 /* ProductBrowser-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProductBrowser-Bridging-Header.h"; sourceTree = "<group>"; };
+		A1FCDCDB206BB31D007BB911 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		D045DDBE828C8BD359654C1B /* Pods_ProductBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProductBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCCB4254A34AEBDD4F283C14 /* Pods-ProductBrowserUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProductBrowserUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProductBrowserUITests/Pods-ProductBrowserUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,6 +139,7 @@
 		A1FCDC9220666ACC007BB911 /* ProductBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				A1FCDCDA206BB30B007BB911 /* Helpers */,
 				A1FCDCCB20684B0F007BB911 /* ProductCell.swift */,
 				A1FCDCC120667FD9007BB911 /* Model */,
 				A1FCDC9320666ACC007BB911 /* AppDelegate.swift */,
@@ -175,6 +178,14 @@
 				A1FCDCC52066CAF4007BB911 /* Product.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		A1FCDCDA206BB30B007BB911 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A1FCDCDB206BB31D007BB911 /* Reachability.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		E92C9F4DEF842B804AD3DAF3 /* Frameworks */ = {
@@ -483,6 +494,7 @@
 			files = (
 				A1FCDC9620666ACC007BB911 /* ProductListViewController.swift in Sources */,
 				A1FCDCCC20684B0F007BB911 /* ProductCell.swift in Sources */,
+				A1FCDCDC206BB31D007BB911 /* Reachability.swift in Sources */,
 				A1FCDCCF2069493E007BB911 /* ProductDetailViewController.swift in Sources */,
 				A1FCDCC62066CAF5007BB911 /* Product.swift in Sources */,
 				A1FCDC9420666ACC007BB911 /* AppDelegate.swift in Sources */,
