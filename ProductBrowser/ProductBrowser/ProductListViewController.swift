@@ -95,7 +95,7 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
         let productName = self.productList[indexPath.row].name ?? ""
         let imageUrlString =  self.productList[indexPath.row].image_url ?? ""
         
-        cell.thumbnailImage.sd_setImage(with: URL(string: imageUrlString), placeholderImage: UIImage.init(named: "placeholder.jpg"), completed: nil)
+        cell.thumbnailImage.sd_setImage(with: URL(string: imageUrlString), placeholderImage: UIImage(named:"placeholder-image"), options:.progressiveDownload, completed: nil)
         
         cell.productName.text = productName
         

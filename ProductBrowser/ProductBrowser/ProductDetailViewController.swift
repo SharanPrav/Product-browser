@@ -18,6 +18,7 @@ class ProductDetailViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var productTitleTop: NSLayoutConstraint!
     @IBOutlet weak var ProductDescriptionViewHeight: NSLayoutConstraint!
     
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var productImageView: UIImageView!
     @IBOutlet weak var ProductDescriptionView: UIWebView!
     @IBOutlet weak var ProductTitle: UILabel!
@@ -30,7 +31,7 @@ class ProductDetailViewController: UIViewController, UIWebViewDelegate {
         self.navigationItem.title = selectedProduct!.name
 
         let imageUrlString = selectedProduct!.image_url ?? ""
-        productImageView.sd_setImage(with: URL(string: imageUrlString), placeholderImage: UIImage.init(named: "placeholder.jpg"), completed: nil)
+        productImageView.sd_setImage(with: URL(string: imageUrlString), placeholderImage: UIImage(named:"placeholder-image"), options:.progressiveDownload, completed: nil)
         
         ProductDescriptionView.scrollView.bounces = false;
         ProductDescriptionView.scrollView.isScrollEnabled = false
@@ -41,6 +42,10 @@ class ProductDetailViewController: UIViewController, UIWebViewDelegate {
         animateDetailView()
     }
 
+    func webViewDidStartLoad(_ : UIWebView) {
+        loadingIndicator.startAnimating()
+    }
+    
     func animateDetailView() {
         UIView.animate(withDuration: 1.0) {
             self.productImageLeading.constant = 0
@@ -57,6 +62,7 @@ class ProductDetailViewController: UIViewController, UIWebViewDelegate {
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
         ProductDescriptionViewHeight.constant = webView.scrollView.contentSize.height
+        loadingIndicator.stopAnimating()
     }
     
     override func didReceiveMemoryWarning() {
