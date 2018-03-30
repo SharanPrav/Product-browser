@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		3456003D846E474CA2670B9A /* Pods_ProductBrowserUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BC5A147C59802634C8DA716 /* Pods_ProductBrowserUITests.framework */; };
 		8941C6CC1C6E9DA0E89722B7 /* Pods_ProductBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D045DDBE828C8BD359654C1B /* Pods_ProductBrowser.framework */; };
+		A11A3E69206E56EB0017F635 /* ProductListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11A3E68206E56EB0017F635 /* ProductListViewControllerTests.swift */; };
+		A11A3E6B206E579B0017F635 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11A3E6A206E579B0017F635 /* NetworkManager.swift */; };
+		A11A3E6C206E579B0017F635 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11A3E6A206E579B0017F635 /* NetworkManager.swift */; };
 		A133B9F5206D842B003B8CC4 /* URLSessionPinningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A133B9F4206D842B003B8CC4 /* URLSessionPinningDelegate.swift */; };
 		A1FCDC9420666ACC007BB911 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FCDC9320666ACC007BB911 /* AppDelegate.swift */; };
 		A1FCDC9620666ACC007BB911 /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FCDC9520666ACC007BB911 /* ProductListViewController.swift */; };
@@ -52,6 +55,8 @@
 		728E93615DFF5669EB9BA78F /* Pods-ProductBrowserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProductBrowserTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProductBrowserTests/Pods-ProductBrowserTests.release.xcconfig"; sourceTree = "<group>"; };
 		7BC5A147C59802634C8DA716 /* Pods_ProductBrowserUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProductBrowserUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		87851030635577A3E3DF4E24 /* Pods-ProductBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProductBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProductBrowser/Pods-ProductBrowser.release.xcconfig"; sourceTree = "<group>"; };
+		A11A3E68206E56EB0017F635 /* ProductListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewControllerTests.swift; sourceTree = "<group>"; };
+		A11A3E6A206E579B0017F635 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		A133B9F4206D842B003B8CC4 /* URLSessionPinningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionPinningDelegate.swift; sourceTree = "<group>"; };
 		A1FCDC9020666ACC007BB911 /* ProductBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProductBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1FCDC9320666ACC007BB911 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -160,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				A1FCDCA820666ACD007BB911 /* ProductBrowserTests.swift */,
+				A11A3E68206E56EB0017F635 /* ProductListViewControllerTests.swift */,
 				A1FCDCAA20666ACD007BB911 /* Info.plist */,
 			);
 			path = ProductBrowserTests;
@@ -178,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				A1FCDCC52066CAF4007BB911 /* Product.swift */,
+				A11A3E6A206E579B0017F635 /* NetworkManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -499,6 +506,7 @@
 				A1FCDCCC20684B0F007BB911 /* ProductCell.swift in Sources */,
 				A133B9F5206D842B003B8CC4 /* URLSessionPinningDelegate.swift in Sources */,
 				A1FCDCDC206BB31D007BB911 /* Reachability.swift in Sources */,
+				A11A3E6B206E579B0017F635 /* NetworkManager.swift in Sources */,
 				A1FCDCCF2069493E007BB911 /* ProductDetailViewController.swift in Sources */,
 				A1FCDCC62066CAF5007BB911 /* Product.swift in Sources */,
 				A1FCDC9420666ACC007BB911 /* AppDelegate.swift in Sources */,
@@ -509,8 +517,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A11A3E6C206E579B0017F635 /* NetworkManager.swift in Sources */,
 				A1FCDCCD20684B0F007BB911 /* ProductCell.swift in Sources */,
 				A1FCDCD02069493E007BB911 /* ProductDetailViewController.swift in Sources */,
+				A11A3E69206E56EB0017F635 /* ProductListViewControllerTests.swift in Sources */,
 				A1FCDCC72066CAF5007BB911 /* Product.swift in Sources */,
 				A1FCDCA920666ACD007BB911 /* ProductBrowserTests.swift in Sources */,
 			);

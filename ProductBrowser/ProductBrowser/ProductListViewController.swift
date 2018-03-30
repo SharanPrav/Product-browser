@@ -14,26 +14,24 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
     @IBOutlet weak var productListTable: UITableView!
     @IBOutlet weak var lastUpdated: UILabel!
     
-    let sharedCache =  URLCache.init(memoryCapacity: 200 * 1024 * 1024, diskCapacity: 200 * 1024 * 1024, diskPath: "productCache")
-    let url = URL(string: "https://gist.githubusercontent.com/anonymous/a3b3e50413fff111505a/raw/0522419f508e7ea506a8856586dce11a5664e9df/products.json")
-    var request : URLRequest?
+   
     var reachability: Reachability?
     var productList = [Product]()
-    var filteredProducts = [Product]()
-    
+    var networkManager: NetworkManager!
+
     private let timer = DispatchSource.makeTimerSource()
     var selectedProduct: Product?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        URLCache.shared = sharedCache
-        self.request = URLRequest.init(url: url!)
-        
+         let session = URLSession(configuration: URLSessionConfiguration.default,
+                                  delegate: URLSessionPinningDelegate(),
+                                  delegateQueue: nil)
+        networkManager = NetworkManager.init(urlSession: session)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         self.reachability = Reachability.init()
         triggerDataRefresh()
     }
@@ -43,13 +41,13 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
         timer.setEventHandler {
             DispatchQueue.main.sync {
                 if (self.reachability!.connection) != .none {
-                    self.downloadProductsList {
+                    self.networkManager.downloadProductsList(completed: { (productList) in
+                        self.productList = productList
                         self.productListTable.reloadData()
                         self.updateHeader()
-                    }
+                    })
                 } else {
-                    guard let cachedResponse = self.sharedCache.cachedResponse(for: self.request!) else {return}
-                    self.parseProductList(responseData: cachedResponse.data)
+                    self.productList = self.networkManager.cachedProductList()
                     self.productListTable.reloadData()
                     self.updateHeader()
                 }
@@ -74,49 +72,6 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
         return dateString
     }
     
-    func downloadProductsList(completed: @escaping() -> ()) {
-        
-        let session = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: URLSessionPinningDelegate(), delegateQueue: nil)
-        
-        let task = session.dataTask(with: self.request!) { (data, response, error) in
-            guard let data = data else {return}
-            self.parseProductList(responseData: data)
-            let cachedURLResponse = CachedURLResponse(response: response!, data: (data as Data), userInfo: nil, storagePolicy: .allowed)
-            self.sharedCache.storeCachedResponse(cachedURLResponse, for: self.request!)
-            DispatchQueue.main.async {
-                completed()
-            }
-        }
-        task.resume()
-    }
-    
-    func parseProductList(responseData: Data) -> () {
-        do {
-            let productList = try
-                JSONDecoder().decode([Product].self, from: responseData)
-            self.productList = productList.filter({$0.items_remaining! > 0 })
-        } catch  let jsonErr {
-            print("Error serializing from json:", jsonErr)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.productList.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell:ProductCell = tableView.dequeueReusableCell(withIdentifier: "cell") as! ProductCell
-        
-        let productName = self.productList[indexPath.row].name ?? ""
-        let imageUrlString =  self.productList[indexPath.row].image_url ?? ""
-        
-        cell.thumbnailImage.sd_setImage(with: URL(string: imageUrlString), placeholderImage: UIImage(named:"placeholder-image"), options:.progressiveDownload, completed: nil)
-        
-        cell.productName.text = productName
-        
-        return cell
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let product = self.productList[indexPath.row]
         
@@ -137,6 +92,22 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
         // Dispose of any resources that can be recreated.
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.productList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell:ProductCell = tableView.dequeueReusableCell(withIdentifier: "cell") as! ProductCell
+        
+        let productName = self.productList[indexPath.row].name ?? ""
+        let imageUrlString =  self.productList[indexPath.row].image_url ?? ""
+        
+        cell.thumbnailImage.sd_setImage(with: URL(string: imageUrlString), placeholderImage: UIImage(named:"placeholder-image"), options:.progressiveDownload, completed: nil)
+        
+        cell.productName.text = productName
+        
+        return cell
+    }
     
 }
 
