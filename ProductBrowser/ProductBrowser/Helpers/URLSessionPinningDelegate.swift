@@ -38,10 +38,7 @@ class URLSessionPinningDelegate: NSObject, URLSessionDelegate {
                 let status = SecTrustEvaluate(serverTrust, &secresult)
                 
                 if(errSecSuccess == status) {
-                    print(SecTrustGetCertificateCount(serverTrust))
                     if let serverCertificate = SecTrustGetCertificateAtIndex(serverTrust, 0) {
-                        
-                        // Public key pinning
                         let serverPublicKey = SecCertificateCopyPublicKey(serverCertificate)
                         let serverPublicKeyData:NSData = SecKeyCopyExternalRepresentation(serverPublicKey!, nil )!
                         let keyHash = sha256(data: serverPublicKeyData as Data)
