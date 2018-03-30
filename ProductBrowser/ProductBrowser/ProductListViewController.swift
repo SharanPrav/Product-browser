@@ -14,15 +14,21 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
     @IBOutlet weak var productListTable: UITableView!
     @IBOutlet weak var lastUpdated: UILabel!
     
+    let sharedCache =  URLCache.init(memoryCapacity: 200 * 1024 * 1024, diskCapacity: 200 * 1024 * 1024, diskPath: "productCache")
+    let url = URL(string: "https://gist.githubusercontent.com/anonymous/a3b3e50413fff111505a/raw/0522419f508e7ea506a8856586dce11a5664e9df/products.json")
+    var request : URLRequest?
     var reachability: Reachability?
     var productList = [Product]()
     var filteredProducts = [Product]()
-
+    
     private let timer = DispatchSource.makeTimerSource()
     var selectedProduct: Product?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        URLCache.shared = sharedCache
+        self.request = URLRequest.init(url: url!)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -38,13 +44,14 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
             DispatchQueue.main.sync {
                 if (self.reachability!.connection) != .none {
                     self.downloadProductsList {
-                        print(self.filteredProducts.count)
                         self.productListTable.reloadData()
                         self.updateHeader()
                     }
                 } else {
-                    self.totalProducts.text = "You seem to be offline"
-                    self.lastUpdated.text = "Please check internet connection and try again"
+                    guard let cachedResponse = self.sharedCache.cachedResponse(for: self.request!) else {return}
+                    self.parseProductList(responseData: cachedResponse.data)
+                    self.productListTable.reloadData()
+                    self.updateHeader()
                 }
             }
         }
@@ -54,7 +61,7 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
     func updateHeader() {
         var totalItemsInStock = 0
         for  product in self.productList {
-                totalItemsInStock = totalItemsInStock + product.items_remaining!
+            totalItemsInStock = totalItemsInStock + product.items_remaining!
         }
         self.totalProducts.text = NSString(format:"%d items in stock", totalItemsInStock) as String
         self.lastUpdated.text = NSString(format:"Last updated: %@", self.currentTimeString()) as String
@@ -68,21 +75,29 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
     }
     
     func downloadProductsList(completed: @escaping() -> ()) {
-        let url = URL(string: "https://gist.githubusercontent.com/anonymous/a3b3e50413fff111505a/raw/0522419f508e7ea506a8856586dce11a5664e9df/products.json")
         
-        URLSession.shared.dataTask(with:url!) { (data, response, error) in
+        let session = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: URLSessionPinningDelegate(), delegateQueue: nil)
+        
+        let task = session.dataTask(with: self.request!) { (data, response, error) in
             guard let data = data else {return}
-            do {
-                let productList = try
-                    JSONDecoder().decode([Product].self, from: data)
-                self.productList = productList.filter({$0.items_remaining! > 0 })
-                DispatchQueue.main.async {
-                    completed()
-                }
-            } catch let jsonErr {
-                print("Error serializing from json:", jsonErr)
+            self.parseProductList(responseData: data)
+            let cachedURLResponse = CachedURLResponse(response: response!, data: (data as Data), userInfo: nil, storagePolicy: .allowed)
+            self.sharedCache.storeCachedResponse(cachedURLResponse, for: self.request!)
+            DispatchQueue.main.async {
+                completed()
             }
-        }.resume()
+        }
+        task.resume()
+    }
+    
+    func parseProductList(responseData: Data) -> () {
+        do {
+            let productList = try
+                JSONDecoder().decode([Product].self, from: responseData)
+            self.productList = productList.filter({$0.items_remaining! > 0 })
+        } catch  let jsonErr {
+            print("Error serializing from json:", jsonErr)
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -116,12 +131,12 @@ class ProductListViewController: UIViewController , UITableViewDelegate, UITable
             destinationVC.selectedProduct = selectedProduct
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
+    
 }
 
