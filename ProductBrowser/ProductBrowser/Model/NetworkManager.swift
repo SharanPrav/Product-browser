@@ -10,11 +10,11 @@ import Foundation
 
 class NetworkManager {
     
-    let sharedCache =  URLCache.init(memoryCapacity: 200 * 1024 * 1024, diskCapacity: 200 * 1024 * 1024, diskPath: "productCache")
     var filteredProducts = [Product]()
     var request : URLRequest?
     var urlSession : URLSession?
-    
+    let sharedCache =  URLCache.init(memoryCapacity: 200 * 1024 * 1024, diskCapacity: 200 * 1024 * 1024, diskPath: "productCache")
+
     public init(urlSession: URLSession) {
         self.urlSession = urlSession
         URLCache.shared = sharedCache
@@ -36,19 +36,20 @@ class NetworkManager {
     }
     
     func cachedProductList() -> ([Product]) {
-        guard let cachedResponse = self.sharedCache.cachedResponse(for: self.request!) else {return[] }
+        guard let cachedResponse = self.sharedCache.cachedResponse(for: self.request!) else{ return[] }
         self.filteredProducts = self.parseProductList(responseData: cachedResponse.data)
         return self.filteredProducts
     }
     
     func parseProductList(responseData: Data) -> ([Product]) {
+        var filteredProducts = [Product]()
         do {
             let productList = try
                 JSONDecoder().decode([Product].self, from: responseData)
-            return productList.filter({$0.items_remaining! > 0 })
+            filteredProducts = productList.filter({$0.items_remaining! > 0 })
         } catch  let jsonErr {
             print("Error serializing from json:", jsonErr)
         }
-        return []
+        return filteredProducts
     }
 }

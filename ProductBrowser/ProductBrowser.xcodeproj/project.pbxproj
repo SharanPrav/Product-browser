@@ -151,12 +151,12 @@
 				A1FCDCCB20684B0F007BB911 /* ProductCell.swift */,
 				A1FCDC9320666ACC007BB911 /* AppDelegate.swift */,
 				A1FCDC9520666ACC007BB911 /* ProductListViewController.swift */,
-				A1FCDC9720666ACC007BB911 /* Main.storyboard */,
-				A1FCDC9A20666ACC007BB911 /* Assets.xcassets */,
-				A1FCDC9C20666ACC007BB911 /* LaunchScreen.storyboard */,
-				A1FCDC9F20666ACC007BB911 /* Info.plist */,
 				A1FCDCCE2069493E007BB911 /* ProductDetailViewController.swift */,
+				A1FCDC9720666ACC007BB911 /* Main.storyboard */,
+				A1FCDC9C20666ACC007BB911 /* LaunchScreen.storyboard */,
 				A1FCDCD5206AA945007BB911 /* ProductBrowser-Bridging-Header.h */,
+				A1FCDC9A20666ACC007BB911 /* Assets.xcassets */,
+				A1FCDC9F20666ACC007BB911 /* Info.plist */,
 			);
 			path = ProductBrowser;
 			sourceTree = "<group>";
@@ -684,6 +684,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ProductBrowser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.ProductBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -702,6 +703,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ProductBrowser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.ProductBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
